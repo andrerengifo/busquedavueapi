@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Busqueda real de datos api</title>
+	 <script src="https://unpkg.com/vue@next"></script> <!-- Añadir Vue -->
+</head>
+<body>
+	
+
+<div id="app">
+	<div v-for="persona in filtrar_nombres">
+        {{ persona.id }} ._  {{ persona.name }}
+     </div>
+<input type="text" class="form-control is-valid" v-model="nombre" placeholder="Ingresar nombre"  required>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0-0/axios.js"></script>
+<script>
+
+const App = {
+  data() {
+    return {
+      nombre: '',
+      nombres: []
+     }
+  },
+  mounted () {
+    axios
+      .get('https://jsonplaceholder.typicode.com/users')
+      .then(response => (this.nombres = response.data))
+      .catch(error => console.log(error))
+  },
+computed: {
+    filtrar_nombres() {
+        return this.nombres.filter(persona => {
+            return persona.name.toLowerCase().includes(this.nombre.toLowerCase())
+            })
+          }
+	}
+}
+
+Vue.createApp(App).mount('#app')
+</script>
+
+</body>
+</html>
